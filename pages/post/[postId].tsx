@@ -12,50 +12,40 @@ import TimeAgo from 'react-timeago'
 
 type FormData = {
     comment: string
+    id: number
+    username: string
 }
-
 function PostPage() {
-    const router = useRouter()
-    const {data: session} = useSession();
+    var _a;
+    const router = useRouter();
+    const { data: session } = useSession();
     const [addComment] = useMutation(ADD_COMMENT, {
         refetchQueries: [GET_POST_BY_POST_ID, 'getPostListByPostId'],
-    })
-    const { data } = useQuery(GET_POST_BY_POST_ID, {
+    });
+    const { data, error } = useQuery(GET_POST_BY_POST_ID, {
         variables: {
             post_id: router.query.postId,
         }
-    })
-    const post: Post = data?.getPostListByPostId
-
-    const {
-        register,
-        handleSubmit,
-        watch,
-        setValue,
-        formState: {errors},
-    } = useForm<FormData>()
-
-    const onSubmit: SubmitHandler<FormData> = async (data) => {
-        console.log(data)
-
-        const notification = toast.loading('Posting comment')
-
+    });
+    const post = data === null || data === void 0 ? void 0 : data.getPostListByPostId;
+    const { register, handleSubmit, watch, setValue, formState: { errors }, } = useForm();
+    const onSubmit = async (data: any) => {
+        var _a;
+        console.log(data);
+        const notification = toast.loading('Posting comment');
         await addComment({
             variables: {
                 post_id: router.query.postId,
-                username: session?.user?.name,
+                username: (_a = session === null || session === void 0 ? void 0 : session.user) === null || _a === void 0 ? void 0 : _a.name,
                 text: data.comment
             },
-        })
-
-        setValue('comment', '')
-
+        });
+        setValue('comment', '');
         toast.success('Comment post', {
             id: notification,
-        })
-    }   
-
-    console.log(data)
+        });
+    };
+    console.log(data);
 
   return (
     <div className='mx-auto my-7 max-w-5xl'>
@@ -88,26 +78,26 @@ function PostPage() {
 
         <div className="-my-5 rounded-b-md border border-t-0 border-gray-300 bg-white py-5 px-10">
             <hr className='py-2' />
+            
+            {post?.comments.map((comment: any) => (
+            <div
+                className='relative flex items-center space-x-2 space-y-5'
+                key={ comment.id }
+            >
+            <hr className='absolute top-10 left-7 z-0 h-16 border' />
+            <div className="z-50">
+                <Avatar seed={comment.username}/>
+            </div>
 
-            {/* {post?.comments.map((comment) => (
-                <div
-                    className='relative flex items-center space-x-2 space-y-5'
-                    key={comment.id}
-                >
-                    <hr className='absolute top-10 left-7 z-0 h-16 border' />
-                    <div className="z-50">
-                        <Avatar seed={comment.username}/>
-                    </div>
-
-                    <div className="flex flex-col">
-                        <p className='py-2 text-xs text-gray-400'>
-                            <span className='font-semibold text-gray-600'>{comment.username} </span>
-                            <TimeAgo date={comment.created_at} />
-                        </p>
-                        <p>{comment.text}</p>
-                    </div>
-                </div>
-            ))} */}
+            <div className="flex flex-col">
+                <p className='py-2 text-xs text-gray-400'>
+                    <span className='font-semibold text-gray-600'>{comment.username} </span>
+                    <TimeAgo date={comment.created_at} />
+                </p>
+                <p>{comment.text}</p>
+            </div>
+            </div>
+            ))}
         </div>
     </div>
   )

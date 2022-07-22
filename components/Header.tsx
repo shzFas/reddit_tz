@@ -1,0 +1,79 @@
+import React from 'react'
+import {
+    ChevronDownIcon,
+    HomeIcon,
+    MenuIcon,
+    SearchIcon
+} from '@heroicons/react/solid'
+import {
+    BellIcon,
+    ChatIcon,
+    GlobeIcon,
+    PlusIcon,
+    SparklesIcon,
+    SpeakerphoneIcon,
+    VideoCameraIcon
+} from '@heroicons/react/outline'
+import { signIn, signOut, useSession } from 'next-auth/react'
+import Link from 'next/link'
+
+function Header() {
+    const { data: session } = useSession();
+  return (
+    <div className='sticky top-0 z-50 flex items-center bg-white px-4 py-2 shadow-md'>
+        <div className="">
+        <Link href="/">
+        <div className='cursor-pointer'>
+        <img width={25} height={25} src="https://www.notion.so/image/https%3A%2F%2Fs3-us-west-2.amazonaws.com%2Fsecure.notion-static.com%2Fa4af2b57-8369-44a1-af29-8b993d61c32b%2FScreenshot_2021-07-08_at_6.07.57_PM.png?table=block&id=58395adc-79c9-4032-9e5a-32aca69c3127&spaceId=6c17db0c-b19c-4e3c-90bd-131541793710&width=250&userId=&cache=v2" alt="" />
+        </div>
+        </Link>
+        </div>
+
+        <div className="flex items-center mx-7 xl:min-w-[300px]">
+            <HomeIcon className='h-5 w-5' />
+            <p className='ml-2 hidden flex-1 lg:inline'>Home</p>
+            <ChevronDownIcon className='h-5 w-5' />
+        </div>
+
+        {/* Search box */}
+        <form action="" className="flex flex-1 items-center space-x-2 rounded-sm border border-gray-200 bg-gray-100 px-3 py-1">
+            <SearchIcon className='h-6 w-6 text-gray-600' />
+            <input className='flex-1 bg-transparent outline-none' type="text" placeholder='ПОИСК...'/>
+            <button type='submit' hidden></button>
+        </form>
+
+        <div className="flex items-center space-x-2 text-gray-500 mx-5 hidden lg:inline-flex">
+            <SparklesIcon className='icon' />
+            <GlobeIcon className='icon' />
+            <VideoCameraIcon className='icon' />
+            <hr className='h-10 border border-gray-100' />
+            <ChatIcon className='icon'/>
+            <BellIcon className='icon' />
+            <PlusIcon className='icon' />
+            <SpeakerphoneIcon className='icon' />
+        </div>
+
+        <div className="ml-5 flex items-center lg:hidden">
+            <MenuIcon className='icon' />
+        </div>
+
+        {/* Sign in */}
+        {session ? (
+            <div onClick={() => signOut()} className="hidden cursor-pointer items-center space-x-2 border border-gray-100 p-2 lg:flex">
+                <div className="flex-1 text-xs">
+                    <p className='truncate'>{session?.user?.name}</p>
+                    <p className='text-gray-400'>1 Karma</p>
+                </div>
+                <ChevronDownIcon className='h-5 flex-shrink-0 text-gray'/>
+            </div>
+        ) : (
+            <div onClick={() => signIn()} className="hidden cursor-pointer items-center space-x-2 border border-gray-100 p-2 lg:flex">
+                <p className='text-gray-400'>Sign In</p>
+            </div>
+        )}
+
+    </div>
+  )
+}
+
+export default Header

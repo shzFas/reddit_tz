@@ -24,3 +24,7 @@ Deploy it to the cloud with [Vercel](https://vercel.com/new?utm_source=github&ut
 
 
 DEMO: https://reddit-tz.vercel.app/
+
+## Frontend assignment
+
+![](https://sun1.dataix-kz-akkol.userapi.com/impg/V6QsYBTvJIGk9fLTGxSWvybDt41xNvpHHMvilw/9RPAxhYD1vI.jpg?size=370x2160&quality=96&sign=934e4206121271185f2f0f40c73f4c97&type=album)

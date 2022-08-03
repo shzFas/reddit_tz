@@ -10,14 +10,10 @@ const Home: NextPage = () => {
         <title>Reddit 2.0</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
-
-      {/* Postbox */}
       <PostBox />
-
       <div className="flex">
         <Feed/>
       </div>
-
     </div>
   )
 }
